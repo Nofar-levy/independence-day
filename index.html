@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>שרים וזוכרים – ישראל 78</title>
+  <style>
+    :root {
+      --blue: #0b4ea2;
+      --light-blue: #eaf4ff;
+      --gold: #d4af37;
+      --dark: #16324f;
+      --white: #ffffff;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.95), rgba(234,244,255,0.95)),
+        linear-gradient(180deg, #f8fbff 0%, #eaf4ff 100%);
+      color: var(--dark);
+    }
+
+    header {
+      text-align: center;
+      padding: 32px 16px 20px;
+      background: linear-gradient(135deg, var(--blue), #2d6fd3);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 2.2rem;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .flag-line {
+      margin-top: 14px;
+      font-size: 1.6rem;
+      letter-spacing: 6px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    .instructions {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      border: 2px solid rgba(11, 78, 162, 0.08);
+    }
+
+    .instructions h2 {
+      margin-top: 0;
+      color: var(--blue);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .station-btn {
+      border: none;
+      border-radius: 22px;
+      padding: 20px 12px;
+      background: linear-gradient(180deg, var(--blue), #0d61c8);
+      color: white;
+      font-size: 1.25rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      min-height: 90px;
+    }
+
+    .station-btn:hover {
+      transform: translateY(-4px);
+    }
+
+    .station-btn span {
+      display: block;
+      font-size: 0.95rem;
+      margin-top: 6px;
+      font-weight: normal;
+    }
+
+    .card {
+      display: none;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      border: 3px solid rgba(212, 175, 55, 0.28);
+    }
+
+    .card.active {
+      display: block;
+    }
+
+    .artist-title {
+      margin-top: 0;
+      color: var(--blue);
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(212, 175, 55, 0.16);
+      color: #7a5c00;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .question-box,
+    .answer-box,
+    .bonus-box,
+    .video-box {
+      background: #f9fcff;
+      border: 1px solid #d9e9ff;
+      border-radius: 16px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .question-box h3,
+    .answer-box h3,
+    .bonus-box h3,
+    .video-box h3 {
+      margin-top: 0;
+      color: var(--blue);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .main-btn,
+    .link-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .main-btn:hover,
+    .link-btn:hover {
+      opacity: 0.93;
+      transform: translateY(-2px);
+    }
+
+    .primary {
+      background: var(--gold);
+      color: #1d1d1d;
+      font-weight: bold;
+    }
+
+    .secondary {
+      background: var(--blue);
+      color: white;
+    }
+
+    .ghost {
+      background: #edf5ff;
+      color: var(--blue);
+      border: 1px solid #c6dcff;
+    }
+
+    .embed-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 12px;
+      background: #dfeeff;
+    }
+
+    .embed-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .meta {
+      margin-top: 12px;
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+
+    .footer-note {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #4b6480;
+    }
+
+    @media (max-width: 640px) {
+      header h1 {
+        font-size: 1.7rem;
+      }
+
+      .artist-title {
+        font-size: 1.6rem;
+      }
+
+      .station-btn {
+        min-height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🇮🇱 שרים וזוכרים – ישראל 78 🇮🇱</h1>
+    <p>
+      משחק כיתתי ליום הזיכרון ולחגיגות יום העצמאות ה־78 למדינת ישראל<br>
+      לחצו על מספר תחנה, האזינו לשיר, נסו לנחש – ורק אחר כך גלו את התשובה והסרטון.
+    </p>
+    <div class="flag-line">✡ ✡ ✡</div>
+  </header>
+
+  <div class="container">
+    <section class="instructions">
+      <h2>איך משחקים?</h2>
+      <p>
+        בכל תחנה יש זמר או זמרת ישראליים מוכרים. תחילה משמיעים את השיר ומנסים לנחש.
+        אחר כך לוחצים על <strong>"גלה תשובה"</strong>, ורואים גם סרטון נוסף שקשור לישראל,
+        למשואות או לאהבת הארץ.
+      </p>
+    </section>
+
+    <section class="grid" id="stationsGrid"></section>
+
+    <section class="card" id="stationCard">
+      <div class="badge" id="stationNumberBadge"></div>
+      <h2 class="artist-title" id="artistName"></h2>
+
+      <div class="question-box">
+        <h3>🎵 שלב 1: נחשו את השיר</h3>
+        <p id="guessText"></p>
+        <div class="embed-wrap">
+          <iframe id="songFrame" allowfullscreen></iframe>
+        </div>
+        <div class="actions">
+          <a id="songLink" class="link-btn ghost" href="#" target="_blank" rel="noopener noreferrer">פתיחה ביוטיוב</a>
+          <button class="main-btn primary" onclick="revealAnswer()">גלה תשובה</button>
+        </div>
+      </div>
+
+      <div class="answer-box hidden" id="answerBox">
+        <h3>💡 תשובה</h3>
+        <p class="meta"><strong>שם האמן:</strong> <span id="answerArtist"></span></p>
+        <p class="meta"><strong>שם השיר:</strong> <span id="answerSong"></span></p>
+      </div>
+
+      <div class="video-box hidden" id="videoBox">
+        <h3>🇮🇱 שלב 2: סרטון על ישראל / טקס משואות</h3>
+        <p id="videoText" class="meta"></p>
+        <div class="embed-wrap">
+          <iframe id="videoFrame" allowfullscreen></iframe>
+        </div>
+        <div class="actions">
+          <a id="videoLink" class="link-btn ghost" href="#" target="_blank" rel="noopener noreferrer">פתיחה ביוטיוב</a>
+        </div>
+      </div>
+
+      <div class="bonus-box hidden" id="bonusBox">
+        <h3>⭐ שאלת בונוס לכיתה</h3>
+        <p id="bonusQuestion" class="meta"></p>
+      </div>
+
+      <div class="actions">
+        <button class="main-btn secondary" onclick="closeStation()">חזרה ללוח התחנות</button>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      מומלץ לפתוח את כל התחנות מראש לפני הפעילות בכיתה, כדי לוודא שהסרטונים מתאימים לאורך ולאווירה הרצויה.
+    </div>
+  </div>
+
+  <script>
+    const stations = [
+      {
+        number: 1,
+        artist: "ציפי שביט",
+        songName: "כולם הלכו לג'מבו",
+        songEmbed: "https://www.youtube.com/embed/2ZQ7QW5v6yA",
+        songWatch: "https://www.youtube.com/watch?v=2ZQ7QW5v6yA",
+        videoTitle: "ציפי שביט – טקס הדלקת משואה",
+        videoEmbed: "https://www.youtube.com/embed/aZSA56c1fBA",
+        videoWatch: "https://www.youtube.com/watch?v=aZSA56c1fBA",
+        bonus: "מה בסרטון מחבר את ציפי שביט למדינת ישראל?"
+      },
+      {
+        number: 2,
+        artist: "יהורם גאון",
+        songName: "כל הכבוד",
+        songEmbed: "https://www.youtube.com/embed/ykekBqmGHrc",
+        songWatch: "https://www.youtube.com/watch?v=ykekBqmGHrc",
+        videoTitle: "יהורם גאון – הדלקת משואה 2017",
+        videoEmbed: "https://www.youtube.com/embed/7ERV0BJYR24",
+        videoWatch: "https://www.youtube.com/watch?v=7ERV0BJYR24",
+        bonus: "איזה מסר ישראלי חזק אפשר ללמוד מיהורם גאון?"
+      },
+      {
+        number: 3,
+        artist: "שלמה ארצי",
+        songName: "ארץ חדשה",
+        songEmbed: "https://www.youtube.com/embed/LvN1QmRmxjs",
+        songWatch: "https://www.youtube.com/watch?v=LvN1QmRmxjs",
+        videoTitle: "שלמה ארצי – מדליק משואה",
+        videoEmbed: "https://www.youtube.com/embed/Oafo2JtZgzc",
+        videoWatch: "https://youtu.be/Oafo2JtZgzc?si=MlwJHHGWAb8Yqxjw",
+        bonus: "למה לדעתכם בחרו דווקא בשלמה ארצי לטקס כזה?"
+      },
+      {
+        number: 4,
+        artist: "שלומי שבת",
+        songName: "בגלל הרוח",
+        songEmbed: "https://www.youtube.com/embed/nli5tcVRjG4",
+        songWatch: "https://www.youtube.com/watch?v=nli5tcVRjG4",
+        videoTitle: "שלומי שבת – טקס משואות",
+        videoEmbed: "https://www.youtube.com/embed/CR7QhTZjYuQ",
+        videoWatch: "https://www.youtube.com/watch?v=CR7QhTZjYuQ",
+        bonus: "איזו תחושה השיר והסרטון מעבירים על ישראל?"
+      },
+      {
+        number: 5,
+        artist: "עוזי חיטמן",
+        songName: "נולדתי לשלום",
+        songEmbed: "https://www.youtube.com/embed/3aCLcVr0HhQ",
+        songWatch: "https://www.youtube.com/watch?v=3aCLcVr0HhQ",
+        videoTitle: "עוזי חיטמן – טקס הדלקת המשואות בבינה מלאכותית",
+        videoEmbed: "https://www.youtube.com/embed/Ohy1Tph2b9I",
+        videoWatch: "https://youtu.be/Ohy1Tph2b9I?si=9l3-gTy1bnKt3orn",
+        bonus: "מה מיוחד בכך שמציגים את עוזי חיטמן בטכנולוגיה חדשה?"
+      },
+      {
+        number: 6,
+        artist: "חנן בן ארי",
+        songName: "מולדת",
+        songEmbed: "https://www.youtube.com/embed/MZHU0MfZAMw",
+        songWatch: "https://www.youtube.com/watch?v=MZHU0MfZAMw",
+        videoTitle: "חנן בן ארי – מולדת",
+        videoEmbed: "https://www.youtube.com/embed/MZHU0MfZAMw",
+        videoWatch: "https://www.youtube.com/watch?v=MZHU0MfZAMw",
+        bonus: "אילו מילים בשיר מבטאות קשר עמוק לארץ?"
+      },
+      {
+        number: 7,
+        artist: "עופרה חזה",
+        songName: "לאורך הים",
+        songEmbed: "https://www.youtube.com/embed/RkZkekS8NQU",
+        songWatch: "https://www.youtube.com/watch?v=RkZkekS8NQU",
+        videoTitle: "עופרה חזה – קטע מטקס הדלקת המשואות",
+        videoEmbed: "https://www.youtube.com/embed/vzovRQS7cpM",
+        videoWatch: "https://www.youtube.com/watch?v=vzovRQS7cpM",
+        bonus: "מדוע עופרה חזה נחשבת לדמות כל כך משמעותית בתרבות הישראלית?"
+      },
+      {
+        number: 8,
+        artist: "דנה אינטרנשיונל",
+        songName: "דיווה",
+        songEmbed: "https://www.youtube.com/embed/FQh2b6n2F3k",
+        songWatch: "https://www.youtube.com/watch?v=FQh2b6n2F3k",
+        videoTitle: "דנה אינטרנשיונל – טקס הדלקת המשואות 2025",
+        videoEmbed: "https://www.youtube.com/embed/ICX1P0N5W3Q",
+        videoWatch: "https://www.youtube.com/watch?v=ICX1P0N5W3Q",
+        bonus: "איך דנה אינטרנשיונל ייצגה את ישראל לעולם?"
+      },
+      {
+        number: 9,
+        artist: "שרית חדד",
+        songName: "אמן",
+        songEmbed: "https://www.youtube.com/embed/X6z2fK_BF7k",
+        songWatch: "https://www.youtube.com/watch?v=X6z2fK_BF7k",
+        videoTitle: "שרית חדד – מתוך טקס הדלקת המשואות 2022",
+        videoEmbed: "https://www.youtube.com/embed/-SBQCMpSWkI",
+        videoWatch: "https://www.youtube.com/watch?v=-SBQCMpSWkI",
+        bonus: "מה הופך את שרית חדד לקול ישראלי שמוכר לדורות שונים?"
+      },
+      {
+        number: 10,
+        artist: "עידן רייכל",
+        songName: "ארץ",
+        songEmbed: "https://www.youtube.com/embed/QbtaJt2D4OY",
+        songWatch: "https://www.youtube.com/watch?v=QbtaJt2D4OY",
+        videoTitle: "עידן רייכל – הדלקת משואה 2020",
+        videoEmbed: "https://www.youtube.com/embed/xLfess0NYwk",
+        videoWatch: "https://www.youtube.com/watch?v=xLfess0NYwk",
+        bonus: "איך המוזיקה של עידן רייכל מחברת בין אנשים ותרבויות בישראל?"
+      }
+    ];
+
+    const stationsGrid = document.getElementById("stationsGrid");
+    const stationCard = document.getElementById("stationCard");
+
+    const stationNumberBadge = document.getElementById("stationNumberBadge");
+    const artistName = document.getElementById("artistName");
+    const guessText = document.getElementById("guessText");
+    const songFrame = document.getElementById("songFrame");
+    const songLink = document.getElementById("songLink");
+
+    const answerBox = document.getElementById("answerBox");
+    const answerArtist = document.getElementById("answerArtist");
+    const answerSong = document.getElementById("answerSong");
+
+    const videoBox = document.getElementById("videoBox");
+    const videoText = document.getElementById("videoText");
+    const videoFrame = document.getElementById("videoFrame");
+    const videoLink = document.getElementById("videoLink");
+
+    const bonusBox = document.getElementById("bonusBox");
+    const bonusQuestion = document.getElementById("bonusQuestion");
+
+    let currentStation = null;
+
+    stations.forEach(station => {
+      const btn = document.createElement("button");
+      btn.className = "station-btn";
+      btn.innerHTML = `${station.number}<span>${station.artist}</span>`;
+      btn.onclick = () => openStation(station.number);
+      stationsGrid.appendChild(btn);
+    });
+
+    function openStation(number) {
+      const station = stations.find(item => item.number === number);
+      if (!station) return;
+
+      currentStation = station;
+
+      stationNumberBadge.textContent = `תחנה ${station.number}`;
+      artistName.textContent = station.artist;
+      guessText.textContent = "הקשיבו לשיר ונסו לנחש: מהו שם השיר? ומי הזמר או הזמרת?";
+      songFrame.src = station.songEmbed;
+      songLink.href = station.songWatch;
+
+      answerArtist.textContent = station.artist;
+      answerSong.textContent = station.songName;
+
+      videoText.textContent = station.videoTitle;
+      videoFrame.src = "";
+      videoLink.href = station.videoWatch;
+
+      bonusQuestion.textContent = station.bonus;
+
+      answerBox.classList.add("hidden");
+      videoBox.classList.add("hidden");
+      bonusBox.classList.add("hidden");
+
+      stationCard.classList.add("active");
+      stationCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function revealAnswer() {
+      if (!currentStation) return;
+
+      answerBox.classList.remove("hidden");
+      videoBox.classList.remove("hidden");
+      bonusBox.classList.remove("hidden");
+
+      videoFrame.src = currentStation.videoEmbed;
+    }
+
+    function closeStation() {
+      stationCard.classList.remove("active");
+      songFrame.src = "";
+      videoFrame.src = "";
+      currentStation = null;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
